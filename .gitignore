@@ -1,0 +1,10 @@
+# CMake build output (also holds the downloaded JUCE source in build/_deps)
+build/
+out/
+CMakeUserPresets.json
+
+# IDEs
+.vs/
+.vscode/
+.idea/
+*.user
