@@ -25,7 +25,10 @@ juce_add_gui_app(AudioAnalyzer
 target_sources(AudioAnalyzer
     PRIVATE
         Source/Main.cpp
-        Source/MainComponent.cpp)
+        Source/MainComponent.cpp
+        Source/AudioStream.cpp
+        Source/LevelAnalyzer.cpp
+        Source/LevelMeter.cpp)
 
 target_compile_definitions(AudioAnalyzer
     PRIVATE
@@ -36,6 +39,7 @@ target_compile_definitions(AudioAnalyzer
 
 target_link_libraries(AudioAnalyzer
     PRIVATE
+        juce::juce_audio_utils
         juce::juce_gui_extra
     PUBLIC
         juce::juce_recommended_config_flags
