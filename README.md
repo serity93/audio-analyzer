@@ -40,11 +40,14 @@ To build, run and debug in an IDE, either:
 CMakeLists.txt       build definition (fetches JUCE, defines the app target)
 CMakePresets.json    configure/build presets
 Source/
-  Main.cpp           application entry point and main window
-  MainComponent.*    the window's content: a device selector and meter per stream
-  AudioStream.*      one input stream: its own audio device, feeding a LevelAnalyzer
-  LevelAnalyzer.*    peak/RMS measurement (runs on the audio thread)
-  LevelMeter.*       peak/RMS meter display (polls a LevelAnalyzer)
+  Main.cpp               application entry point and main window
+  Audio/
+    AudioStream.*        one input stream: its own audio device, feeding a LevelAnalyzer
+  Analysis/
+    LevelAnalyzer.*      peak/RMS measurement (runs on the audio thread)
+  UI/
+    MainComponent.*      the window's content: a device selector and meter per stream
+    LevelMeter.*         peak/RMS meter display (polls a LevelAnalyzer)
 ```
 
 ## Licence note

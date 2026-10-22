@@ -2,7 +2,7 @@
 
 #include <juce_audio_devices/juce_audio_devices.h>
 
-#include "LevelAnalyzer.h"
+#include "Analysis/LevelAnalyzer.h"
 
 // One analyzed input stream: its own audio device (chosen by the user) feeding a LevelAnalyzer.
 // Each stream has its own AudioDeviceManager so the two streams can come from different devices.

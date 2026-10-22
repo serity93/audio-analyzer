@@ -1,4 +1,4 @@
-#include "LevelAnalyzer.h"
+#include "Analysis/LevelAnalyzer.h"
 
 void LevelAnalyzer::prepare ([[maybe_unused]] double sampleRate, int newNumChannels)
 {

@@ -1,4 +1,4 @@
-#include "MainComponent.h"
+#include "UI/MainComponent.h"
 
 // The application object: JUCE creates one of these at startup (see START_JUCE_APPLICATION
 // at the bottom) and calls initialise() / shutdown() for us.

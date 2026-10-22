@@ -3,7 +3,7 @@
 #include <juce_audio_basics/juce_audio_basics.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
-#include "LevelAnalyzer.h"
+#include "Analysis/LevelAnalyzer.h"
 
 // A vertical peak/RMS meter for each channel of a LevelAnalyzer, with a dBFS scale and
 // numeric readouts. It polls the analyzer on a timer; all the measuring happens in the analyzer.

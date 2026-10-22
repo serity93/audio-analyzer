@@ -2,8 +2,8 @@
 
 #include <juce_audio_utils/juce_audio_utils.h>
 
-#include "AudioStream.h"
-#include "LevelMeter.h"
+#include "Audio/AudioStream.h"
+#include "UI/LevelMeter.h"
 
 // The main content of the window: a device selector and peak/RMS meter for each of the two streams.
 class MainComponent final : public juce::Component

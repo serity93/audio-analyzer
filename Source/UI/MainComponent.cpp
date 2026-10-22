@@ -1,4 +1,4 @@
-#include "MainComponent.h"
+#include "UI/MainComponent.h"
 
 MainComponent::MainComponent()
 {

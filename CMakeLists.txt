@@ -22,13 +22,28 @@ juce_add_gui_app(AudioAnalyzer
     NEEDS_WEB_BROWSER FALSE
     NEEDS_CURL FALSE)
 
-target_sources(AudioAnalyzer
-    PRIVATE
-        Source/Main.cpp
-        Source/MainComponent.cpp
-        Source/AudioStream.cpp
-        Source/LevelAnalyzer.cpp
-        Source/LevelMeter.cpp)
+set(AUDIO_ANALYZER_SOURCES
+    Source/Main.cpp
+    Source/Audio/AudioStream.cpp
+    Source/Audio/AudioStream.h
+    Source/Analysis/LevelAnalyzer.cpp
+    Source/Analysis/LevelAnalyzer.h
+    Source/UI/LevelMeter.cpp
+    Source/UI/LevelMeter.h
+    Source/UI/MainComponent.cpp
+    Source/UI/MainComponent.h)
+
+target_sources(AudioAnalyzer PRIVATE ${AUDIO_ANALYZER_SOURCES})
+
+# Includes are written relative to Source/ (e.g. "Audio/AudioStream.h").
+target_include_directories(AudioAnalyzer PRIVATE Source)
+
+# Mirror the Source/ folder structure in IDE project trees (e.g. Visual Studio filters).
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX Source FILES ${AUDIO_ANALYZER_SOURCES})
+
+# JUCE compiles its modules as part of this target; group them instead of leaving them in the
+# IDE's default "Source Files" filter.
+source_group("JUCE Modules" REGULAR_EXPRESSION "/modules/juce_[a-z0-9_]+/[^/]+$")
 
 target_compile_definitions(AudioAnalyzer
     PRIVATE
