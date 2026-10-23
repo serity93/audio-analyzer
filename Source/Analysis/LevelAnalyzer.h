@@ -46,7 +46,7 @@ private:
     // RMS settings
     static constexpr double rmsWindowMs = 300.0;
     static constexpr double rmsFallRateDbPerSecond = 12.0;
-    
+
     // RMS values
     double rmsAlpha = 0.0;
     double rmsFallPerSample = 1.0;

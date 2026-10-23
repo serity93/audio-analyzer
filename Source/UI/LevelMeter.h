@@ -21,10 +21,19 @@ private:
     static constexpr float minDb = -60.0f;
     static constexpr float maxDb = 0.0f;
 
+    // Peaks at or above this count as clipping. It's just under 0 dBFS because integer input
+    // converted to float tops out slightly below 1.0 on the positive side (32767/32768 for 16-bit).
+    static constexpr float clipDb = -0.01f;
+
+    // How long the peak-hold marker stays at a new high before following the peak back down.
+    static constexpr double peakHoldMs = 1500.0;
+
     const LevelAnalyzer& analyzer;
 
     int numChannels = 0;
     std::array<float, LevelAnalyzer::maxChannels> peakDb {}, rmsDb {};
+    std::array<float, LevelAnalyzer::maxChannels> peakHoldDb {};
+    std::array<double, LevelAnalyzer::maxChannels> peakHoldStartMs {};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LevelMeter)
 };
