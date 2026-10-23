@@ -34,5 +34,15 @@ private:
     std::array<std::atomic<float>, maxChannels> peak {};
     std::array<std::atomic<float>, maxChannels> rms {};
 
-    // TODO: add whatever state your peak/RMS calculations need here.
+    // RMS settings
+    static constexpr double rmsWindowMs = 300.0;
+    static constexpr double rmsFallRateDbPerSecond = 12.0;
+    
+    // RMS values
+    double rmsAlpha = 0.0;
+    double rmsFallPerSample = 1.0;
+
+    // RMS running values
+    std::array<double, maxChannels> meanSquare{};
+    std::array<double, maxChannels> calculatedRmsValue{};
 };
