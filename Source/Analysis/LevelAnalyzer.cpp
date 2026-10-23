@@ -19,6 +19,7 @@ void LevelAnalyzer::prepare (double sampleRate, int newNumChannels)
     // dBPerSample = -dBPerSecond / sampleRate
     // gainPerSample    = 10^((dBPerSample) / 20)
     //                  = 10^((-dBPerSecond / sampleRate) / 20)
+    peakFallPerSample = std::pow(10.0, -peakFallRateDbPerSecond / sampleRate / 20.0);
     rmsFallPerSample = std::pow(10.0, -rmsFallRateDbPerSecond / sampleRate / 20.0);
 
     reset();
@@ -26,6 +27,7 @@ void LevelAnalyzer::prepare (double sampleRate, int newNumChannels)
 
 void LevelAnalyzer::reset()
 {
+    calculatedPeakValue.fill(0.0);
     meanSquare.fill(0.0);
     calculatedRmsValue.fill(0.0);
 
@@ -40,7 +42,8 @@ void LevelAnalyzer::process (const float* const* channelData, int numInputChanne
 {
     juce::ScopedNoDenormals noDenormals;
 
-    const auto blockFall = std::pow(rmsFallPerSample, (double)numSamples);
+    const auto peakBlockFall = std::pow(peakFallPerSample, (double)numSamples);
+    const auto rmsBlockFall = std::pow(rmsFallPerSample, (double)numSamples);
 
     for (int ch = 0; ch < numInputChannels; ++ch)
     {
@@ -49,26 +52,29 @@ void LevelAnalyzer::process (const float* const* channelData, int numInputChanne
         if (samples == nullptr)
             continue;
 
+        // max absolute sample in this block
+        auto blockMax = 0.0;
+
         // get mean square from last block
         auto blockMeanSquare = meanSquare[(size_t)ch];
 
-        // calculate new mean square value
+        // calculate new mean square value and block max
         for (int i = 0; i < numSamples; ++i)
         {
             const auto sample = (double)samples[i];
+            blockMax = std::max(blockMax, std::abs(sample));
             blockMeanSquare += rmsAlpha * (sample * sample - blockMeanSquare);
         }
 
-        // store new mean square
+        // Peak
+        auto& blockPeak = calculatedPeakValue[(size_t)ch];
+        blockPeak = std::max(blockMax, blockPeak * peakBlockFall);
+        peak[(size_t)ch].store((float)blockPeak, std::memory_order_relaxed);
+
+        // RMS
         meanSquare[(size_t)ch] = blockMeanSquare;
-
-        // get RMS of last block
         auto& blockRms = calculatedRmsValue[(size_t)ch];
-
-        // calculate max of RMS and RMS with fall factor
-        blockRms = std::max(std::sqrt(blockMeanSquare), blockRms * blockFall);
-
-        // store new RMS value
+        blockRms = std::max(std::sqrt(blockMeanSquare), blockRms * rmsBlockFall);
         rms[(size_t)ch].store((float)blockRms, std::memory_order_relaxed);
     }
 }

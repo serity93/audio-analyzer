@@ -34,6 +34,15 @@ private:
     std::array<std::atomic<float>, maxChannels> peak {};
     std::array<std::atomic<float>, maxChannels> rms {};
 
+    // Peak settings
+    static constexpr double peakFallRateDbPerSecond = 20.0;
+
+    // Peak values
+    double peakFallPerSample = 1.0;
+
+    // Peak running values
+    std::array<double, maxChannels> calculatedPeakValue{};
+
     // RMS settings
     static constexpr double rmsWindowMs = 300.0;
     static constexpr double rmsFallRateDbPerSecond = 12.0;
